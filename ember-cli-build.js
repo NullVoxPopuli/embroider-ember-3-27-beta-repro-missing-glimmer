@@ -20,5 +20,19 @@ module.exports = function (defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
-  return app.toTree();
+  const { Webpack } = require('@embroider/webpack');
+  // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+  return require('@embroider/compat').compatBuild(app, Webpack, {
+    skipBabel: [
+      {
+        package: 'qunit',
+      },
+    ],
+    packagerOptions: {
+      webpackConfig: {},
+    },
+    // required due to this app being a dynamic component generator
+    allowUnsafeDynamicComponents: true,
+  });
 };
